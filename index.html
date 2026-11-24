@@ -75,6 +75,17 @@ body[data-screen="quiz"] #main{padding-top:0}
 }
 .search:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 
+/* Tabs */
+.tabs{display:flex;gap:6px;margin-bottom:16px;border-bottom:1px solid var(--border)}
+.tab{
+  padding:10px 16px;background:none;border:0;cursor:pointer;
+  font-weight:700;font-size:14px;color:var(--muted);
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  transition:all .15s;
+}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
 /* File tree */
 .tree-root{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:8px}
 .tree-children{padding-left:18px;margin-left:10px;border-left:1px dashed var(--border)}
@@ -110,6 +121,22 @@ body[data-screen="quiz"] #main{padding-top:0}
 .chev{color:var(--muted);font-size:19px;line-height:1}
 .empty{padding:28px;text-align:center;color:var(--muted);font-size:14px}
 
+/* Collections list */
+.collections-list{display:flex;flex-direction:column;gap:8px}
+.collection-row{
+  display:flex;align-items:center;gap:8px;
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--radius);padding:8px;
+  transition:border-color .15s;
+}
+.collection-row:hover{border-color:var(--accent)}
+.collection-main{
+  display:flex;align-items:center;gap:10px;flex:1;min-width:0;
+  padding:6px 10px;background:none;border:0;cursor:pointer;
+  text-align:left;border-radius:8px;
+}
+.collection-main:hover{background:var(--panel-2)}
+
 /* Buttons / inputs */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:6px;
@@ -139,7 +166,6 @@ body[data-screen="quiz"] #main{padding-top:0}
 .check input{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}
 .row{display:flex;gap:12px;flex-wrap:wrap}
 .row > *{flex:1;min-width:150px}
-
 .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
 
 /* Setup */
@@ -188,7 +214,7 @@ body[data-screen="quiz"] #main{padding-top:0}
 .q-index{font-size:13px;font-weight:800;color:var(--accent);
   text-transform:uppercase;letter-spacing:.6px}
 .q-index.ref{color:var(--muted);display:inline-flex;align-items:center;gap:5px}
-.q-actions{display:flex;gap:8px;margin-left:auto}
+.q-actions{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
 .chip{
   display:inline-flex;align-items:center;gap:5px;
   padding:6px 11px;border-radius:99px;border:1px solid var(--border);
@@ -197,6 +223,8 @@ body[data-screen="quiz"] #main{padding-top:0}
 }
 .chip:hover{background:var(--panel-3)}
 .chip.on{background:var(--yellow-soft);border-color:var(--yellow);color:var(--yellow)}
+.chip.save{background:transparent}
+.chip.save:hover{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
 
 .q-text{font-size:16px;line-height:1.7;margin-bottom:14px;white-space:pre-wrap;word-break:break-word}
 .q-card.reference .q-text{margin-bottom:0}
@@ -317,6 +345,56 @@ body[data-screen="quiz"] #main{padding-top:0}
   font-size:14px;line-height:1.65;white-space:pre-wrap;word-break:break-word;
 }
 
+/* Collection detail */
+.collection-question{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;
+}
+.cq-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.cq-qno{
+  font-size:12.5px;font-weight:800;color:var(--accent);
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.cq-opts{display:flex;flex-direction:column;gap:5px;margin-top:10px}
+.cq-meta{font-size:12px;color:var(--muted);margin-top:8px}
+
+/* Modal */
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);
+  z-index:300;display:flex;align-items:center;justify-content:center;
+  padding:16px;animation:fadeIn .15s ease;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-body{
+  background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+  padding:18px;width:100%;max-width:440px;max-height:85vh;
+  display:flex;flex-direction:column;
+  box-shadow:var(--shadow);
+  animation:slideUp .2s ease;
+}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-title{font-size:16px;font-weight:800;margin-bottom:14px}
+.modal-list{
+  display:flex;flex-direction:column;gap:6px;
+  overflow-y:auto;margin-bottom:12px;min-height:0;flex:1;
+}
+.modal-collection-row{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;
+  background:var(--panel-2);border:1px solid var(--border);
+  border-radius:9px;cursor:pointer;font-size:14px;
+  text-align:left;transition:all .15s;
+}
+.modal-collection-row:hover:not(:disabled){border-color:var(--accent);background:var(--panel-3)}
+.modal-collection-row.has{
+  opacity:.7;cursor:not-allowed;
+  background:var(--green-soft);border-color:var(--green);
+}
+.modal-new{
+  display:flex;gap:8px;padding-top:12px;
+  border-top:1px solid var(--border);flex-shrink:0;
+}
+.modal-new .input{flex:1}
+
 /* Misc */
 .error-card{text-align:center}
 .error-card h2{margin-bottom:8px}
@@ -337,7 +415,7 @@ body[data-screen="quiz"] #main{padding-top:0}
   position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);
   background:var(--panel-3);border:1px solid var(--border);color:var(--text);
   padding:11px 18px;border-radius:11px;font-size:13.5px;font-weight:600;
-  box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:all .22s;z-index:200;
+  box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:all .22s;z-index:400;
   max-width:90vw;text-align:center;
 }
 .toast.show{opacity:1;transform:translate(-50%,0)}
@@ -349,14 +427,14 @@ body[data-screen="quiz"] #main{padding-top:0}
     max-height:70vh;overflow:auto;border-radius:18px 18px 0 0;
     transform:translateY(105%);transition:transform .25s ease;
     box-shadow:var(--shadow);border-bottom:0;
+    display:block;
   }
   .quiz-side.open{transform:none}
+  .palette-grid{flex:none;min-height:auto;overflow-y:visible}
   .only-mobile{display:inline-flex}
   .score-big{font-size:36px}
   .page-title{font-size:20px}
   .q-card{scroll-margin-top:80px}
-  .quiz-side{ display:block; }
-  .palette-grid{ flex:none; min-height:auto; overflow-y:visible; }
 }
 @media(max-width:520px){
   .qt-sub{display:none}
@@ -365,6 +443,7 @@ body[data-screen="quiz"] #main{padding-top:0}
   .timer{font-size:13px;padding:6px 9px}
   .tree-folder-head{font-size:13.5px}
   .test-name{font-size:13.5px}
+  .tab{padding:10px 12px;font-size:13px}
 }
 </style>
 </head>
@@ -399,7 +478,7 @@ const CONFIG = {
   defaultFolder: 'General',
   passRatio: 0.7,
   defaultTimeMin: 0,
-  storagePrefix: 'quizapp.v3.',
+  storagePrefix: 'quizapp.v4.',
   autosaveDebounceMs: 250
 };
 
@@ -562,7 +641,10 @@ const state = {
   session: null,
   results: {},
   reviewFilter: 'all',
-  error: ''
+  error: '',
+  collections: {},        // id -> { id, name, createdAt, questions: [...] }
+  savedTab: 'tests',      // 'tests' | 'saved'
+  viewingCollection: null // collection id
 };
 
 /* ==================================================================
@@ -624,8 +706,6 @@ async function loadQuestions(test) {
       try { image = new URL(imgRaw, baseUrl).href; } catch { image = imgRaw; }
     }
 
-    /* A question is "scorable" only if it has ≥2 options AND a valid answer.
-       Otherwise it becomes a reference item — shown as text + image only. */
     const scorable = options.length >= 2 && answerIndex >= 0 && answerIndex < options.length;
 
     out.push({
@@ -641,7 +721,81 @@ async function loadQuestions(test) {
 }
 
 /* ==================================================================
-   7. THEME
+   7. COLLECTIONS CRUD
+   ================================================================== */
+function loadCollections() {
+  const raw = store.get('collections', {}) || {};
+  // Sanity normalize
+  for (const id of Object.keys(raw)) {
+    const c = raw[id];
+    if (!c || typeof c !== 'object') { delete raw[id]; continue; }
+    if (!c.id) c.id = id;
+    if (!c.name) c.name = 'Untitled';
+    if (!Array.isArray(c.questions)) c.questions = [];
+    if (typeof c.createdAt !== 'number') c.createdAt = Date.now();
+  }
+  return raw;
+}
+function saveCollections() {
+  store.set('collections', state.collections);
+}
+function genId() {
+  return 'c_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 7);
+}
+function createCollection(name) {
+  const id = genId();
+  state.collections[id] = { id, name, createdAt: Date.now(), questions: [] };
+  saveCollections();
+  return id;
+}
+function renameCollection(id, newName) {
+  const c = state.collections[id];
+  if (!c) return false;
+  const trimmed = String(newName || '').trim();
+  if (!trimmed) return false;
+  c.name = trimmed;
+  saveCollections();
+  return true;
+}
+function deleteCollection(id) {
+  if (!state.collections[id]) return false;
+  delete state.collections[id];
+  saveCollections();
+  return true;
+}
+function collectionHasQuestion(col, question) {
+  return col.questions.some(q => q.text === question.text);
+}
+function addQuestionToCollection(collectionId, question, sourceInfo) {
+  const col = state.collections[collectionId];
+  if (!col) return { added: false, reason: 'not-found' };
+  if (collectionHasQuestion(col, question)) return { added: false, reason: 'exists' };
+  col.questions.push({
+    text: question.text,
+    options: (question.options || []).slice(),
+    answerIndex: question.answerIndex,
+    image: question.image || '',
+    explain: question.explain || '',
+    scorable: !!question.scorable,
+    sourceTestId: sourceInfo.testId,
+    sourceTestName: sourceInfo.testName,
+    sourceFolder: sourceInfo.folder,
+    savedAt: Date.now()
+  });
+  saveCollections();
+  return { added: true };
+}
+function removeQuestionFromCollection(collectionId, idx) {
+  const col = state.collections[collectionId];
+  if (!col) return false;
+  if (idx < 0 || idx >= col.questions.length) return false;
+  col.questions.splice(idx, 1);
+  saveCollections();
+  return true;
+}
+
+/* ==================================================================
+   8. THEME
    ================================================================== */
 function applyTheme() {
   document.documentElement.setAttribute('data-theme', state.theme);
@@ -655,19 +809,23 @@ function toggleTheme() {
 }
 
 /* ==================================================================
-   8. ROUTER
+   9. ROUTER
    ================================================================== */
 function render() {
+  // Close any open modal when re-rendering
+  $$('.modal-backdrop').forEach(m => m.remove());
+
   document.body.dataset.screen = state.screen;
   const main = $('#main');
   main.innerHTML = '';
   switch (state.screen) {
-    case 'loading': renderLoading(main); break;
-    case 'setup':   renderSetup(main);   break;
-    case 'quiz':    renderQuiz(main);    break;
-    case 'result':  renderResult(main);  break;
-    case 'error':   renderError(main);   break;
-    default:        renderHome(main);
+    case 'loading':    renderLoading(main); break;
+    case 'setup':      renderSetup(main); break;
+    case 'quiz':       renderQuiz(main); break;
+    case 'result':     renderResult(main); break;
+    case 'error':      renderError(main); break;
+    case 'collection': renderCollection(main); break;
+    default:           renderHome(main);
   }
 }
 function goHome() {
@@ -676,11 +834,12 @@ function goHome() {
   state.screen = 'home';
   state.pendingTest = null;
   state.pendingQuestions = null;
+  state.viewingCollection = null;
   render();
 }
 
 /* ==================================================================
-   9. FOLDER TREE
+   10. FOLDER TREE
    ================================================================== */
 function buildTree(tests) {
   const root = { type: 'folder', name: '', path: '', children: new Map() };
@@ -736,16 +895,34 @@ function renderTree(node, depth = 0, forceOpen = false) {
 }
 
 /* ==================================================================
-   10. HOME
+   11. HOME — tabs: Tests / Saved
    ================================================================== */
 function renderHome(main) {
-  main.append(
-    h('div', { class: 'page' },
-      h('div', { class: 'page-head' },
-        h('h1', { class: 'page-title' }, 'Practice Tests'),
-        h('p', { class: 'page-sub' },
-          `${state.catalog.length} test${state.catalog.length === 1 ? '' : 's'} available`)
-      ),
+  const container = h('div', { class: 'page' });
+  const collectionsCount = Object.keys(state.collections).length;
+
+  container.append(
+    h('div', { class: 'page-head' },
+      h('h1', { class: 'page-title' }, 'Quiz Practice'),
+      h('p', { class: 'page-sub' },
+        state.savedTab === 'tests'
+          ? `${state.catalog.length} test${state.catalog.length === 1 ? '' : 's'} available`
+          : `${collectionsCount} collection${collectionsCount === 1 ? '' : 's'} saved`)
+    ),
+    h('div', { class: 'tabs' },
+      h('button', {
+        class: 'tab' + (state.savedTab === 'tests' ? ' active' : ''),
+        onclick: () => { state.savedTab = 'tests'; render(); }
+      }, '📚 Tests'),
+      h('button', {
+        class: 'tab' + (state.savedTab === 'saved' ? ' active' : ''),
+        onclick: () => { state.savedTab = 'saved'; render(); }
+      }, '⭐ Saved' + (collectionsCount ? ` (${collectionsCount})` : ''))
+    )
+  );
+
+  if (state.savedTab === 'tests') {
+    container.append(
       h('div', { class: 'search-row' },
         h('input', {
           class: 'search', type: 'search', placeholder: 'Search tests or folders…',
@@ -754,10 +931,86 @@ function renderHome(main) {
         })
       ),
       h('div', { id: 'folderList' })
+    );
+    main.append(container);
+    renderFolderList();
+  } else {
+    container.append(...savedTabNodes());
+    main.append(container);
+  }
+}
+
+function savedTabNodes() {
+  const entries = Object.values(state.collections)
+    .sort((a, b) => b.createdAt - a.createdAt);
+
+  const nodes = [];
+
+  nodes.push(
+    h('div', { class: 'search-row', style: { marginTop: '8px' } },
+      h('button', {
+        class: 'btn primary',
+        onclick: () => {
+          const name = prompt('Collection name:');
+          if (name && name.trim()) {
+            const id = createCollection(name.trim());
+            state.viewingCollection = id;
+            state.screen = 'collection';
+            render();
+          }
+        }
+      }, '➕ New collection')
     )
   );
-  renderFolderList();
+
+  if (!entries.length) {
+    nodes.push(h('div', { class: 'empty' },
+      'No saved collections yet. During a test, tap 💾 Save on any question to build one.'));
+    return nodes;
+  }
+
+  const list = h('div', { class: 'collections-list' });
+  entries.forEach(col => {
+    const total = col.questions.length;
+    const gradable = col.questions.filter(isScorable).length;
+    list.append(
+      h('div', { class: 'collection-row' },
+        h('button', {
+          class: 'collection-main',
+          onclick: () => openCollection(col.id)
+        },
+          h('span', { class: 'test-icon' }, '⭐'),
+          h('div', { class: 'test-info' },
+            h('div', { class: 'test-name' }, col.name),
+            h('div', { class: 'test-meta' },
+              `${total} question${total === 1 ? '' : 's'} · ${gradable} gradable`)
+          )
+        ),
+        h('button', {
+          class: 'icon-btn', title: 'Rename',
+          onclick: (e) => {
+            e.stopPropagation();
+            const name = prompt('New name:', col.name);
+            if (name && name.trim() && renameCollection(col.id, name.trim())) render();
+          }
+        }, '✏️'),
+        h('button', {
+          class: 'icon-btn', title: 'Delete',
+          onclick: (e) => {
+            e.stopPropagation();
+            if (confirm(`Delete "${col.name}"? This cannot be undone.`)) {
+              deleteCollection(col.id);
+              render();
+            }
+          }
+        }, '🗑️')
+      )
+    );
+  });
+  nodes.push(list);
+  return nodes;
 }
+
 function renderFolderList() {
   const host = $('#folderList');
   if (!host) return;
@@ -789,7 +1042,135 @@ function testRow(test) {
 }
 
 /* ==================================================================
-   11. LOADING / ERROR
+   12. COLLECTION DETAIL
+   ================================================================== */
+function openCollection(id) {
+  state.viewingCollection = id;
+  state.screen = 'collection';
+  render();
+}
+
+function renderCollection(main) {
+  const col = state.collections[state.viewingCollection];
+  if (!col) { state.viewingCollection = null; state.screen = 'home'; render(); return; }
+
+  const total = col.questions.length;
+  const gradable = col.questions.filter(isScorable).length;
+
+  const list = h('div', { class: 'question-list' });
+  if (!total) {
+    list.append(h('div', { class: 'empty' },
+      'This collection is empty. During a test, tap 💾 Save on any question to add it here.'));
+  } else {
+    col.questions.forEach((q, i) => list.append(collectionQuestionRow(q, i)));
+  }
+
+  main.append(
+    h('div', { class: 'page' },
+      h('button', {
+        class: 'btn ghost sm',
+        style: { marginBottom: '14px' },
+        onclick: () => { state.viewingCollection = null; state.savedTab = 'saved'; state.screen = 'home'; render(); }
+      }, '← Saved'),
+      h('div', { class: 'setup-title' }, col.name),
+      h('div', { class: 'setup-sub' },
+        `${total} question${total === 1 ? '' : 's'} · ${gradable} gradable`),
+
+      h('div', { class: 'toolbar' },
+        h('button', {
+          class: 'btn primary',
+          disabled: gradable === 0,
+          title: gradable === 0 ? 'No gradable questions in this collection' : '',
+          onclick: () => practiceCollection(col.id)
+        }, '▶ Practice'),
+        h('button', {
+          class: 'btn ghost',
+          onclick: () => {
+            const name = prompt('New name:', col.name);
+            if (name && name.trim() && renameCollection(col.id, name.trim())) render();
+          }
+        }, '✏️ Rename'),
+        h('button', {
+          class: 'btn ghost',
+          onclick: () => {
+            if (confirm(`Delete "${col.name}"? This cannot be undone.`)) {
+              deleteCollection(col.id);
+              state.viewingCollection = null;
+              state.savedTab = 'saved';
+              state.screen = 'home';
+              render();
+            }
+          }
+        }, '🗑️ Delete')
+      ),
+
+      list
+    )
+  );
+}
+
+function collectionQuestionRow(q, idx) {
+  const scorable = isScorable(q);
+  const imgEl = q.image ? h('img', {
+    class: 'q-image', src: q.image, alt: '', loading: 'lazy',
+    onerror: e => e.currentTarget.remove()
+  }) : null;
+
+  const opts = scorable ? h('div', { class: 'cq-opts' },
+    q.options.map((opt, oi) => h('div', {
+      class: 'ropt' + (oi === q.answerIndex ? ' correct' : '')
+    },
+      h('span', { class: 'k' }, String.fromCharCode(65 + oi)),
+      h('span', {}, opt)
+    ))
+  ) : null;
+
+  return h('div', { class: 'collection-question' },
+    h('div', { class: 'cq-head' },
+      h('div', { class: 'cq-qno' }, `#${idx + 1}`),
+      scorable
+        ? h('span', { class: 'badge ok' }, 'Gradable')
+        : h('span', { class: 'badge ref' }, 'Reference'),
+      h('div', { class: 'spacer' }),
+      h('button', {
+        class: 'icon-btn', title: 'Remove from collection',
+        onclick: () => {
+          if (confirm('Remove this question from the collection?')) {
+            removeQuestionFromCollection(state.viewingCollection, idx);
+            render();
+          }
+        }
+      }, '🗑️')
+    ),
+    h('div', { class: 'q-text' }, q.text),
+    imgEl,
+    opts,
+    h('div', { class: 'cq-meta' },
+      q.sourceTestName ? `From: ${q.sourceTestName}` : '')
+  );
+}
+
+function practiceCollection(id) {
+  const col = state.collections[id];
+  if (!col || !col.questions.length) return;
+  const gradable = col.questions.filter(isScorable);
+  if (!gradable.length) { toast('No gradable questions in this collection'); return; }
+
+  const test = {
+    id: 'collection:' + id,
+    name: '⭐ ' + col.name,
+    folder: 'Saved collection',
+    link: '',
+    collectionId: id
+  };
+  state.pendingTest = test;
+  state.pendingQuestions = col.questions.map(q => ({ ...q, options: (q.options || []).slice() }));
+  state.screen = 'setup';
+  render();
+}
+
+/* ==================================================================
+   13. LOADING / ERROR
    ================================================================== */
 function renderLoading(main) {
   main.append(h('div', { class: 'spinner' }), h('p', { class: 'center' }, 'Loading test…'));
@@ -810,7 +1191,7 @@ function renderError(main) {
 }
 
 /* ==================================================================
-   12. OPEN TEST
+   14. OPEN TEST
    ================================================================== */
 async function openTest(test) {
   state.pendingTest = test;
@@ -830,7 +1211,7 @@ async function openTest(test) {
 }
 
 /* ==================================================================
-   13. SETUP
+   15. SETUP
    ================================================================== */
 function renderSetup(main) {
   const test = state.pendingTest;
@@ -839,6 +1220,7 @@ function renderSetup(main) {
   const referenceTotal = allQs.length - scorableTotal;
   const savedSession = loadSavedSession(test.id);
   const prefs = store.get('prefs', { timeLimitMin: CONFIG.defaultTimeMin, shuffleQuestions: false, shuffleOptions: false });
+  const isFromCollection = !!test.collectionId;
 
   const countInput = h('input', {
     class: 'input', type: 'number', min: 1, max: Math.max(1, scorableTotal),
@@ -881,7 +1263,13 @@ function renderSetup(main) {
 
   main.append(
     h('div', { class: 'page' },
-      h('button', { class: 'btn ghost sm', onclick: goHome, style: { marginBottom: '14px' } }, '← All tests'),
+      h('button', {
+        class: 'btn ghost sm',
+        style: { marginBottom: '14px' },
+        onclick: isFromCollection
+          ? () => openCollection(test.collectionId)
+          : goHome
+      }, isFromCollection ? '← Back to collection' : '← All tests'),
       h('div', { class: 'setup-title' }, test.name),
       h('div', { class: 'setup-sub' }, `${test.folder} · ${subParts.join(' · ')}`),
 
@@ -919,7 +1307,7 @@ function renderSetup(main) {
 }
 
 /* ==================================================================
-   14. SESSION LIFECYCLE
+   16. SESSION LIFECYCLE
    ================================================================== */
 const sessionKey = id => 'session.' + encodeURIComponent(id);
 
@@ -930,7 +1318,6 @@ function shuffleOptionsOf(q) {
   return { ...q, options: mixed.map(x => x.text), answerIndex: mixed.findIndex(x => x.ok) };
 }
 
-/* Take up to `count` scorable questions from `qs`, keeping ALL reference rows in order. */
 function selectQuestions(qs, count) {
   if (!count || count >= qs.filter(isScorable).length) return qs;
   const out = [];
@@ -955,6 +1342,7 @@ function startSession(test, questions, opts) {
     testId: test.id,
     testName: test.name,
     folder: test.folder,
+    fromCollection: test.collectionId || null,
     opts,
     startedAt: Date.now(),
     elapsedSec: 0,
@@ -1000,17 +1388,19 @@ function saveSession() {
 }
 
 function saveResult(session, ratio) {
-  const rec = state.results[session.testId] || { best: 0, attempts: 0, last: 0 };
-  rec.best = Math.max(rec.best, ratio);
-  rec.last = ratio;
-  rec.attempts += 1;
-  rec.lastDate = Date.now();
-  state.results[session.testId] = rec;
-  store.set('results', state.results);
+  if (!session.fromCollection) {
+    const rec = state.results[session.testId] || { best: 0, attempts: 0, last: 0 };
+    rec.best = Math.max(rec.best, ratio);
+    rec.last = ratio;
+    rec.attempts += 1;
+    rec.lastDate = Date.now();
+    state.results[session.testId] = rec;
+    store.set('results', state.results);
+  }
 }
 
 /* ==================================================================
-   15. TIMER
+   17. TIMER
    ================================================================== */
 let timerId = null;
 function startTimer() {
@@ -1039,7 +1429,7 @@ function tickTimer() {
 }
 
 /* ==================================================================
-   16. QUIZ — helpers
+   18. QUIZ helpers
    ================================================================== */
 function scorableCountOf(qs) {
   return qs.reduce((n, q) => n + (isScorable(q) ? 1 : 0), 0);
@@ -1058,7 +1448,7 @@ function progressPct() {
 }
 
 /* ==================================================================
-   17. QUIZ — render
+   19. QUIZ — render
    ================================================================== */
 function renderQuiz(main) {
   const s = state.session;
@@ -1068,7 +1458,6 @@ function renderQuiz(main) {
   const progressFill = h('div', { class: 'progress-fill', id: 'progressFill' });
   progressFill.style.width = progressPct() + '%';
 
-  /* palette: only scorable questions, numbered 1..N */
   const palette = h('div', { class: 'palette-grid', id: 'palette' });
   let pnum = 0;
   s.questions.forEach((q, idx) => {
@@ -1093,7 +1482,6 @@ function renderQuiz(main) {
     )
   );
 
-  /* all questions (scorable + reference) rendered inline */
   const qList = h('div', { class: 'question-list', id: 'questionList' });
   let scorableIdx = 0;
   s.questions.forEach((q, idx) => {
@@ -1163,7 +1551,16 @@ function renderQuestionCard(q, idx, num) {
     }
   }, '📝 Note');
 
-  /* options: ONLY for scorable questions */
+  const saveBtn = h('button', {
+    class: 'chip save',
+    title: 'Save to a collection',
+    onclick: () => openSaveModal(q, {
+      testId: s.testId,
+      testName: s.testName,
+      folder: s.folder
+    })
+  }, '💾 Save');
+
   let optList = null;
   if (scorable) {
     optList = h('div', { class: 'options' });
@@ -1196,7 +1593,7 @@ function renderQuestionCard(q, idx, num) {
   },
     h('div', { class: 'q-head' },
       label,
-      h('div', { class: 'q-actions' }, flagBtn, noteBtn)
+      h('div', { class: 'q-actions' }, saveBtn, flagBtn, noteBtn)
     ),
     h('div', { class: 'q-text' }, q.text),
     q.image ? h('img', {
@@ -1237,7 +1634,7 @@ function scrollToQuestion(idx) {
 }
 
 /* ==================================================================
-   18. SCROLL SPY
+   20. SCROLL SPY
    ================================================================== */
 let scrollSpyTick = false;
 function setupScrollSpy() {
@@ -1277,7 +1674,84 @@ function updateCurrentFromScroll() {
 }
 
 /* ==================================================================
-   19. SUBMIT / EXIT
+   21. SAVE MODAL
+   ================================================================== */
+function openSaveModal(question, sourceInfo) {
+  // Remove existing modals first
+  $$('.modal-backdrop').forEach(m => m.remove());
+
+  const backdrop = h('div', { class: 'modal-backdrop' });
+  const close = () => backdrop.remove();
+
+  backdrop.addEventListener('click', e => {
+    if (e.target === backdrop) close();
+  });
+
+  const list = h('div', { class: 'modal-list' });
+  const entries = Object.values(state.collections)
+    .sort((a, b) => b.createdAt - a.createdAt);
+
+  if (!entries.length) {
+    list.append(h('div', {
+      class: 'empty', style: { padding: '16px' }
+    }, 'No collections yet. Create one below.'));
+  } else {
+    entries.forEach(col => {
+      const already = collectionHasQuestion(col, question);
+      list.append(h('button', {
+        class: 'modal-collection-row' + (already ? ' has' : ''),
+        disabled: already,
+        onclick: () => {
+          const res = addQuestionToCollection(col.id, question, sourceInfo);
+          if (res.added) {
+            toast(`Saved to "${col.name}"`);
+            close();
+          } else {
+            toast(res.reason === 'exists' ? 'Already in this collection' : 'Could not save');
+          }
+        }
+      },
+        h('span', {}, '⭐'),
+        h('span', { style: { flex: '1', textAlign: 'left', minWidth: '0',
+          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, col.name),
+        h('span', { class: 'muted', style: { fontSize: '12px', whiteSpace: 'nowrap' } },
+          already ? '✓ Saved' : `${col.questions.length} item${col.questions.length === 1 ? '' : 's'}`)
+      ));
+    });
+  }
+
+  const newName = h('input', {
+    class: 'input', placeholder: 'New collection name…',
+    onkeydown: e => {
+      if (e.key === 'Enter') createAndSave();
+    }
+  });
+
+  function createAndSave() {
+    const name = newName.value.trim();
+    if (!name) { toast('Enter a name'); newName.focus(); return; }
+    const id = createCollection(name);
+    addQuestionToCollection(id, question, sourceInfo);
+    toast(`Saved to "${name}"`);
+    close();
+  }
+
+  const body = h('div', { class: 'modal-body' },
+    h('div', { class: 'modal-title' }, '💾 Save question to…'),
+    list,
+    h('div', { class: 'modal-new' },
+      newName,
+      h('button', { class: 'btn primary sm', onclick: createAndSave }, 'Create')
+    )
+  );
+
+  backdrop.append(body);
+  document.body.append(backdrop);
+  setTimeout(() => newName.focus(), 50);
+}
+
+/* ==================================================================
+   22. SUBMIT / EXIT
    ================================================================== */
 function confirmLeave() {
   const s = state.session;
@@ -1325,7 +1799,7 @@ function doSubmit(auto) {
 }
 
 /* ==================================================================
-   20. RESULT
+   23. RESULT
    ================================================================== */
 function renderResult(main) {
   const s = state.session;
@@ -1356,10 +1830,15 @@ function renderResult(main) {
     )
   );
 
+  const backLabel = s.fromCollection ? '← Back to collection' : '← All tests';
+  const backFn = s.fromCollection
+    ? () => openCollection(s.fromCollection)
+    : goHome;
+
   const toolbar = h('div', { class: 'toolbar' },
     h('button', { class: 'btn primary', onclick: retake }, '🔄 Retake'),
     h('button', { class: 'btn ghost', onclick: toggleAllExplanations }, '💡 Show all explanations'),
-    h('button', { class: 'btn ghost', onclick: goHome }, '← All tests')
+    h('button', { class: 'btn ghost', onclick: backFn }, backLabel)
   );
 
   const filters = h('div', { class: 'filters', id: 'filters' },
@@ -1404,7 +1883,6 @@ function renderReviewList() {
     if (scorable) scorableIdx++;
 
     if (state.reviewFilter === 'wrong') {
-      /* wrong/skipped: only scorable questions that were wrong or blank */
       if (!scorable || isCorrect) return;
     } else if (state.reviewFilter === 'flagged') {
       if (!isFlagged) return;
@@ -1418,7 +1896,9 @@ function renderReviewList() {
 }
 
 function reviewItem(q, idx, ans, isCorrect, isFlagged, note, scorableNum) {
+  const s = state.session;
   const scorable = isScorable(q);
+  const sourceInfo = { testId: s.testId, testName: s.testName, folder: s.folder };
 
   const explainBox = h('div', { class: 'explain hidden' },
     q.explain || 'No explanation provided for this question.');
@@ -1431,6 +1911,12 @@ function reviewItem(q, idx, ans, isCorrect, isFlagged, note, scorableNum) {
     }
   }, '💡 Show explanation');
 
+  const saveBtn = h('button', {
+    class: 'btn ghost sm',
+    title: 'Save to a collection',
+    onclick: () => openSaveModal(q, sourceInfo)
+  }, '💾 Save');
+
   const imageEl = q.image ? h('img', {
     class: 'q-image', src: q.image, alt: 'Question image', loading: 'lazy',
     onerror: e => e.currentTarget.remove()
@@ -1438,7 +1924,9 @@ function reviewItem(q, idx, ans, isCorrect, isFlagged, note, scorableNum) {
 
   const noteEl = (note && note.trim()) ? h('div', { class: 'review-note' }, '📝 ' + note) : null;
 
-  /* ---------- Reference question: text + image only ---------- */
+  const actionRow = h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '10px' } },
+    explainBtn, saveBtn);
+
   if (!scorable) {
     return h('div', { class: 'review-item ref' },
       h('div', { class: 'review-head' },
@@ -1449,12 +1937,11 @@ function reviewItem(q, idx, ans, isCorrect, isFlagged, note, scorableNum) {
       h('div', { class: 'review-q' }, q.text),
       imageEl,
       noteEl,
-      explainBtn,
+      actionRow,
       explainBox
     );
   }
 
-  /* ---------- Scorable question ---------- */
   const optList = h('div', { class: 'review-opts' });
   q.options.forEach((opt, oi) => {
     const classes = ['ropt'];
@@ -1477,7 +1964,7 @@ function reviewItem(q, idx, ans, isCorrect, isFlagged, note, scorableNum) {
     imageEl,
     optList,
     noteEl,
-    explainBtn,
+    actionRow,
     explainBox
   );
 }
@@ -1506,7 +1993,7 @@ function retake() {
 }
 
 /* ==================================================================
-   21. KEYBOARD SHORTCUTS
+   24. KEYBOARD SHORTCUTS
    ================================================================== */
 document.addEventListener('keydown', e => {
   if (state.screen !== 'quiz') return;
@@ -1521,7 +2008,7 @@ document.addEventListener('keydown', e => {
   if (!q) return;
 
   if (/^[1-9]$/.test(e.key)) {
-    if (!isScorable(q)) return;          /* ignore number keys on reference rows */
+    if (!isScorable(q)) return;
     const idx = parseInt(e.key, 10) - 1;
     if (idx >= q.options.length) return;
     const card = document.querySelector(`.q-card[data-qindex="${current}"]`);
@@ -1538,7 +2025,7 @@ document.addEventListener('keydown', e => {
     s.flags[current] = !s.flags[current];
     saveSession();
     const card = document.querySelector(`.q-card[data-qindex="${current}"]`);
-    const flagBtn = card.querySelector('.chip');
+    const flagBtn = card.querySelector('.chip:not(.save)');
     if (flagBtn) {
       flagBtn.classList.toggle('on', s.flags[current]);
       flagBtn.textContent = '🚩 ' + (s.flags[current] ? 'Flagged' : 'Flag');
@@ -1549,12 +2036,13 @@ document.addEventListener('keydown', e => {
 });
 
 /* ==================================================================
-   22. BOOT
+   25. BOOT
    ================================================================== */
 async function init() {
   state.theme = store.get('theme', 'dark');
   applyTheme();
   state.results = store.get('results', {}) || {};
+  state.collections = loadCollections();
 
   $('#themeBtn').addEventListener('click', toggleTheme);
   $('#brandBtn').addEventListener('click', goHome);
